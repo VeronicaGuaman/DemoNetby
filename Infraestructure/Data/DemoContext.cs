@@ -18,11 +18,6 @@ namespace Infraestructure.Data
         }
 
         public DbSet<Product> Products { get; set; }
-
-        //public DemoContext(DbContextOptions options) : base(options)
-        //{
-        //}
-
-        //public DbSet<Product> Products { get; set; }
+     
     }
 }

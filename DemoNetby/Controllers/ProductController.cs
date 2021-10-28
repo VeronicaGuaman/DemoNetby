@@ -37,6 +37,7 @@ namespace DemoNetby.Controllers
             return View(product);
         }
 
+
         [HttpPost]
         public async Task<bool> UpdateProduct(Product product)
         {

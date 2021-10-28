@@ -11,11 +11,12 @@ namespace Infraestructure.Repository
 
         protected readonly DemoContext _context;
         public Repository(DemoContext context) => _context = context;
+        
+        // public  async Task Save => await _context.SaveChangesAsync();
 
         public async Task<T> CreateAsync(T entity)
         {
-            await _context.Set<T>().AddAsync(entity);
-            await _context.SaveChangesAsync();
+            await _context.Set<T>().AddAsync(entity);            
             return entity;
         }
 
