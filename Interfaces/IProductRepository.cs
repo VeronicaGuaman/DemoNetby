@@ -9,6 +9,7 @@ namespace Interfaces
 {
     public interface IProductRepository: IRepository<Product>
     {
-
+        IEnumerable<Product> GetProducts();
+        Product GetProductById(int id);
     }
 }

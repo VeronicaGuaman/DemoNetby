@@ -1,4 +1,6 @@
 using Infraestructure.Data;
+using Infraestructure.Repository;
+using Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -30,6 +32,8 @@ namespace DemoNetby
             services.AddDbContext<DemoContext>(options =>
                    options
                    .UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddTransient<IProductRepository, ProductRepository>();
         }
             // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
             public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -1,17 +1,25 @@
 ﻿using Domain.Entities;
 using Infraestructure.Data;
-using System;
+using Interfaces;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infraestructure.Repository
 {
-    public class ProductRepository : Repository<Product>
+    public class ProductRepository : Repository<Product>, IProductRepository
     {
         public ProductRepository(DemoContext context) :base(context)
         {
+        }
+
+        public IEnumerable<Product> GetProducts()
+        {
+            return _context.Products.ToList();
+        }
+
+        public Product GetProductById(int id)
+        {
+            return _context.Products.Find(id);
         }
     }
 }

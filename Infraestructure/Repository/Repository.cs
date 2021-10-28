@@ -16,7 +16,8 @@ namespace Infraestructure.Repository
 
         public async Task<T> CreateAsync(T entity)
         {
-            await _context.Set<T>().AddAsync(entity);            
+            await _context.Set<T>().AddAsync(entity);
+            await _context.SaveChangesAsync();
             return entity;
         }
 
@@ -27,9 +28,9 @@ namespace Infraestructure.Repository
             return true;
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(T entity)
         {
-            var entity = await GetByIdAsync(id);
+           //var entity = await GetByIdAsync(id);
             if (entity is null)
             {
                 return false;
@@ -41,12 +42,12 @@ namespace Infraestructure.Repository
             return true;          
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
-        {
-            return await _context.Set<T>().ToArrayAsync();
-        }
+        //public async Task<IEnumerable<T>> GetAllAsync()
+        //{
+        //    return await _context.Set<T>().ToArrayAsync();
+        //}
 
-        public async Task<T> GetByIdAsync(int id) => await _context.Set<T>().FindAsync(id);
+        //public async Task<T> GetByIdAsync(int id) => await _context.Set<T>().FindAsync(id);
 
 
     }

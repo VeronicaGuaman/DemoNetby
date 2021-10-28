@@ -5,22 +5,26 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static Domain.Enums.TypeNotification;
 
 namespace DemoNetby.Controllers
 {
-    public class ProductController : Controller
+    public class ProductController : BaseController
     {
         private IProductRepository _productRepository;
+
         public ProductController(IProductRepository productRepository)
         {
             _productRepository = productRepository;
         }
+
         public IActionResult Index()
         {
-            return View();
+            var products = _productRepository.GetProducts();
+            return View(products);
         }
 
-        [HttpGet]
+
         public IActionResult CreateProduct()
         {
             return View();
@@ -29,37 +33,54 @@ namespace DemoNetby.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateProduct(Product product)
         {
-            if(ModelState.IsValid)
-            { 
-               await _productRepository.CreateAsync(product);
+            if (ModelState.IsValid)
+            {
+                await _productRepository.CreateAsync(product);
+                Alert("El Producto se ha agregado con éxito", NotificationType.success);
+                return RedirectToAction("Index");
+            }
+
+            return View(product);
+        }
+
+        public IActionResult UpdateProduct(int id)
+        {
+            if (id <= 0)
+            {
+                return NotFound();
+            }
+
+            var productToEdit = _productRepository.GetProductById(id);
+
+            return View(productToEdit);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateProduct(Product product)
+        {
+            if (ModelState.IsValid)
+            {
+                await _productRepository.UpdateAsync(product);
+                return RedirectToAction("Index");
             }
 
             return View(product);
         }
 
 
-        [HttpPost]
-        public async Task<bool> UpdateProduct(Product product)
+        public async Task<IActionResult> DeleteProduct(int id)
         {
-            return await _productRepository.UpdateAsync(product);
+            if (id <= 0)
+            {
+                return NotFound();
+            }
+
+            var productToDelete = _productRepository.GetProductById(id);
+
+            _productRepository.DeleteAsync(productToDelete);
+
+            return RedirectToAction("Index");
         }
-
-        [HttpPost]
-        public async Task<bool>deleteProduct(int id)
-        {
-            return await _productRepository.DeleteAsync(id);
-        }
-
-      
-        public async Task<IEnumerable<Product>> GetProducts()
-        {
-            return await _productRepository.GetAllAsync();
-        }
-
-
-
-
-
 
     }
 }
